@@ -2,6 +2,7 @@
 #include "../include/Angebot.hpp"
 #include "../include/Nutzer.hpp"
 #include <iostream>
+#include <queue>
 #include <map>
 #include <vector>
 
@@ -9,11 +10,13 @@ namespace Handelsplatz{
 
     class Markt{
         public:
-            //void create_offer(std::string name, std::string pw, std::string ware, int menge, double preis);
+            Markt();
 
-            std::vector<Angebot> get_offer();
+            std::pair<int,Angebot> create_offer(std::string name, std::string ware, int menge, double preis);
 
-            //void delete_offer(std::string name, std::string pw, int id);
+            std::map<int, Angebot> get_offers();
+
+            void delete_offer(std::string name, std::string pw, int id);
 
             //void accept_offer(std::string name, std::string pw, int id);
 
@@ -30,6 +33,16 @@ namespace Handelsplatz{
             int get_size_user();
 
             bool auth(std::string name, std::string pw);
+
+            int get_size_offers();
+
+            void add_offer_ids();
+
+            void edit_my_offer(Nutzer n, std::pair<int, Angebot> paar);
+
+            Nutzer get_user(std::string name);
+
+
 
         private:
             /**
@@ -50,7 +63,7 @@ namespace Handelsplatz{
              */
             //std::map<std::string, value> preise;
 
-            std::vector<int> offer_ids;
+            std::queue<int> offer_ids;
 
             int max_o_id;
     };

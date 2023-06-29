@@ -161,4 +161,7 @@ CMakeFiles/demo.dir/examples/demo.cpp.o: \
  /usr/include/c++/11/bits/stl_multimap.h \
  /usr/include/c++/11/bits/erase_if.h \
  /home/odin/Projekt3/p3_mwe/include/../include/Angebot.hpp \
- /home/odin/Projekt3/p3_mwe/include/../include/Markt.hpp
+ /home/odin/Projekt3/p3_mwe/include/../include/Markt.hpp \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_heap.h /usr/include/c++/11/bits/stl_queue.h
