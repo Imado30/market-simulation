@@ -40,11 +40,16 @@ async def create_nutzer(benutzername: str, request: Request):
 async def create_offer(name: str,ware: str, menge: int, preis: float, request: Request):
     pw=request.headers.get('pw')
     if markt.auth(name, pw):
-        paar = markt.create_offer(name,ware,menge,preis)
         n = markt.get_user(name)
-        n.offer_einfügen(paar)
-        markt.edit_user(name,n)
-        return{"status":"Angebot erfolgreich erstelt"}
+        if ware not in n.get_inventar():
+            return{"status" : "Du hast die Ware nicht im Inventar"}
+        elif n.get_menge() < menge or menge < 1:
+            return{"status" : "Das ging nicht. Gebe eine valide Anzahl ein"}
+        else:
+            paar = markt.create_offer(name,ware,menge,preis)
+            n.offer_einfügen(paar)
+            markt.edit_user(name,n)
+            return{"status":"Angebot erfolgreich erstelt"}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
 
@@ -92,10 +97,14 @@ async def delete_my_offer(name: str, id: int, request: Request):
     pw = request.headers.get('pw')
     if markt.auth(name, pw):
         n = markt.get_user(name)
-        n.remove_my_offer(id)
-        markt.delete_offer(name, id)
-        markt.edit_user(name,n)
-        return {"status" : "Successfully removed"}
+        if id not in n.get_my_offer():
+            return {"status" : "Du hast kein Angebot mit dieser ID erstellt"}
+        else:
+            n.add_for_delete(id)
+            n.remove_my_offer(id)
+            markt.delete_offer(id)
+            markt.edit_user(name,n)
+            return {"status" : "Successfully removed"}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
     
@@ -107,5 +116,21 @@ async def get_berry(name: str, request: Request):
         n = markt.get_user(name)
         markt.edit_user(name,n)
         return {"get_berry" : n.get_berry()}
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}
+    
+
+@rest_api.get('/get_inventar/{name}')
+async def get_inventar(name: str, request: Request):
+    pw = request.headers.get('pw')
+    if markt.auth(name, pw):
+        n = markt.get_user(name)
+        markt.edit_user(name,n)
+        mo = n.get_inventar()
+        out={}
+        for k,v in mo.items():
+            a={ 'Ware': k,'Menge': v}
+            out=a
+        return{"get_inventar": out}
     else:
         return{"status": "Benutzername oder Passwort falsch"}

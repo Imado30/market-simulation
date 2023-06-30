@@ -25,6 +25,7 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("find_ware", &Nutzer::find_ware)
         .def("get_menge", &Nutzer::get_menge)
         .def("add", &Nutzer::add)
+        .def("add_for_delete", &Nutzer::add_for_delete)
         .def("offer_einfügen", &Nutzer::offer_einfügen)
         .def("find_my_offer", &Nutzer::find_my_offer)
         .def("remove_my_offer", &Nutzer::remove_my_offer)

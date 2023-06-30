@@ -11,10 +11,11 @@ namespace Handelsplatz{
     {
         public:
             Nutzer(std::string benutzername, std::string passwort);
-            int get_berry() const;
-            void set_berry(int betrag);
+            double get_berry() const;
+            void set_berry(double betrag);
             bool find_ware(std::string ware);
             void add(const std::string& handelsgut, int anzahl);
+            void add_for_delete(int ID);
             void remove(const std::string& handelsgut, int anzahl);
             void remove_my_offer(int id);
             int get_menge(std::string ware);
@@ -31,6 +32,6 @@ namespace Handelsplatz{
             std::string passwort;
             std::map<std::string, int> inventar;
             std::map<int, Angebot> my_offers;
-            int berry;
+            double berry;
     };
 }

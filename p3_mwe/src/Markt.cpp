@@ -46,7 +46,6 @@ namespace Handelsplatz{
         offers.insert(std::pair<int,Angebot>(id,a));
 
         std::cout << offers.size() << std::endl;
-        //n.offer_einfügen(id, a);
         n.remove(ware, menge);
         std::cout << "Angebot erfolgreich erstellt" << std::endl;
         return std::pair<int,Angebot>(id,a);
