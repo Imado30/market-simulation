@@ -5,18 +5,29 @@
 
 namespace Handelsplatz{
 
-    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw){}
+    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(1000000) {}
 
-    int Nutzer::get_berry() const {
+    double Nutzer::get_berry() const {
         return berry;
     }
 
-    void Nutzer::set_berry(int betrag){
+    void Nutzer::set_berry(double betrag){
         berry = betrag;
     }
 
     void Nutzer::add(const std::string& handelsgut, int anzahl) {
         inventar[handelsgut] += anzahl;
+    }
+
+    void Nutzer::add_for_delete(int ID)
+    {
+        auto item = my_offers.find(ID);
+        auto angebot = item->second;
+
+        std::string ware = angebot.get_warentyp();
+        int anzahl = angebot.get_anzahl();
+
+        inventar.insert(std::pair<std::string,int>(ware,anzahl));
     }
 
     void Nutzer::remove(const std::string& handelsgut, int anzahl) {
@@ -74,25 +85,11 @@ namespace Handelsplatz{
 
     void Nutzer::remove_my_offer(int id) 
     {
-        for (const auto& [id_,angebot] : my_offers)
-        {
-            if (id == id_)
-            {
-                std::string ware = angebot.get_warentyp();
-                int anzahl = angebot.get_anzahl();
-                Nutzer::add(ware, anzahl);
-                my_offers.erase(id);
-            }
-        }
+        my_offers.erase(id);
     }
 
     std::map<int, Angebot> Nutzer::get_my_offer()
     {
-        std::cout << "Hi" <<std::endl;
-        for (const auto& [k,v] : my_offers)
-        {
-            std::cout << "ID: " << k << "  :  Ware: " << v.get_warentyp() << "  ,  Anzahl: " << v.get_anzahl() << "  ,  Preis: " << v.get_preis() << std::endl;
-        }
         return my_offers;
     }
 

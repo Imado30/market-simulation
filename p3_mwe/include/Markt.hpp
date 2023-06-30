@@ -9,18 +9,23 @@ namespace Handelsplatz{
 
     class Markt{
         public:
+
+            Markt();
+
             std::pair<int,Angebot> create_offer(std::string name, std::string ware, int menge, double preis);
 
             std::vector<Angebot> get_offer();
 
-            void delete_offer(std::string name, std::string pw, int id);
+            std::map<int, Angebot> get_offers();   
 
-            void accept_offer(std::string name, std::string pw, int id);
+            void delete_offer(int id);
+
+            void accept_offer(std::string name, int id);
 
             //Funktionen zum Handeln mit dem Markt 
-            void sell(std::string name, std::string pw, std::string ware, int menge);
+            void sell(std::string name, std::string ware, int menge);
 
-            void buy(std::string name, std::string pw, std::string ware, int menge);
+            void buy(std::string name, std::string ware, int menge);
 
             void add_offer_ids();
 
@@ -37,6 +42,10 @@ namespace Handelsplatz{
             bool auth(std::string name, std::string pw);
 
             int get_size_offers();
+
+            void kursverlauf_berechnen(std::string handelsgut);
+
+            int get_preis(std::string key);
 
         private:
             /**
@@ -61,5 +70,18 @@ namespace Handelsplatz{
 
             int max_o_id;
 
-    };
+            std::map<std::string, int> preise = 
+            {
+            {"Bronze", 5000},
+            {"Silber", 5000},
+            {"Gold", 5000},
+            {"Diamant", 5000},
+            {"Rubin", 5000},
+            {"Saphir", 5000},
+            {"Smaragd", 5000},
+            {"Citrin", 5000},
+            {"Opal", 5000},
+            {"Amethyst", 5000},
+            };
+};
 }

@@ -25,6 +25,7 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("find_ware", &Nutzer::find_ware)
         .def("get_menge", &Nutzer::get_menge)
         .def("add", &Nutzer::add)
+        .def("add_for_delete", &Nutzer::add_for_delete)
         .def("offer_einfügen", &Nutzer::offer_einfügen)
         .def("find_my_offer", &Nutzer::find_my_offer)
         .def("remove_my_offer", &Nutzer::remove_my_offer)
@@ -38,11 +39,12 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def(py::init<std::string, int, double>())
         .def("get_warentyp", &Angebot::get_warentyp)
         .def("get_anzahl", &Angebot::get_anzahl)
-        .def("get_preis", &Angebot::get_preis);   
+        .def("get_preis", &Angebot::get_preis); 
 
     py::class_<Markt>(m, "Markt")
         .def(py::init<>())
         .def("create_offer", &Markt::create_offer)
+        .def("get_offers", &Markt::get_offers)
         .def("get_offer", &Markt::get_offer)
         .def("delete_offer", &Markt::delete_offer)
         //.def("accept_offer", &Markt::accept_offer)
@@ -54,6 +56,8 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("get_size_user", &Markt::get_size_user)
         .def("auth", &Markt::auth)
         .def("edit_my_offer", &Markt::edit_my_offer)
+        .def("get_preis", &Markt::get_preis)
+        .def("kursverlauf_berechnen", &Markt::kursverlauf_berechnen)
         .def("get_size_offers", &Markt::get_size_offers)
         .def("add_offer_ids", &Markt::add_offer_ids);
 }
