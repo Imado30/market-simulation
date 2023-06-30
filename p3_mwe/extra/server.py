@@ -67,3 +67,11 @@ async def my_offer_size(name: str, request: Request):
 @rest_api.get('/size_offer')
 async def get_nutzer_size():
     return {"offer_size": markt.get_size_offers()}
+
+@rest_api.get('/authentification/{username}')
+async def authentification(username: str, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(username, pw):
+        return{"success": "true"}
+    else:
+        return {"success": "false"}

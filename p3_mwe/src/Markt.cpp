@@ -1,6 +1,7 @@
 #include "../include/Markt.hpp"
 #include <iostream>
 #include <map>
+#include <exception>
 
 namespace Handelsplatz{
 
@@ -15,6 +16,7 @@ namespace Handelsplatz{
     }
 
     Nutzer Markt::create_user(std::string name, std::string pw){
+        
         Nutzer n(name, pw);
         user.insert(std::pair<std::string, Nutzer>(name,n));
         return n;
