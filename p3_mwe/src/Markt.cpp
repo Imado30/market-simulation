@@ -16,7 +16,9 @@ namespace Handelsplatz{
     }
 
     Nutzer Markt::create_user(std::string name, std::string pw){
-        
+        if (user.find(name)!=user.end()){
+            throw std::logic_error("Benutzername bereits vergeben");
+        }
         Nutzer n(name, pw);
         user.insert(std::pair<std::string, Nutzer>(name,n));
         return n;

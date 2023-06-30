@@ -29,11 +29,14 @@ async def get_offers():
 @rest_api.get('/nutzer/{benutzername}')
 async def create_nutzer(benutzername: str, request: Request):
     # Speichere den Nutzer in der Map 
-    passwort=request.headers.get('pw')
-    erstellter_nutzer = markt.create_user(benutzername, passwort)
-    markt.edit_user(benutzername, erstellter_nutzer)
-    
-    return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
+    try:
+        passwort=request.headers.get('pw')
+        erstellter_nutzer = markt.create_user(benutzername, passwort)
+        markt.edit_user(benutzername, erstellter_nutzer)
+        
+        return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
+    except:
+        return{"message": "failed"}
 
 
 @rest_api.get('/size')

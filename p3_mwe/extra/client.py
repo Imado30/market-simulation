@@ -62,6 +62,9 @@ def login():
 
         r = requests.get(url + f"nutzer/{benutzername}", headers=header)
         pjson = r.json()
+        if(pjson["message"]=="failed"):
+            print("Der Benutzername ist bereits vergeben, möchten Sie sich einloggen?")
+            login()
         print(pjson["message"])
 
 
