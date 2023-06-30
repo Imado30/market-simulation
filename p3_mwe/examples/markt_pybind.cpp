@@ -1,4 +1,4 @@
-// uvicorn server:rest_api --port 8000 --reload
+// uvicorn Server:rest_api --port 8000 --reload
 // cmake -S . -B build && cmake --build build && cmake --install build
 // python3 -m uvicorn Server:rest_api --port 8000 --reload
 //cmake -S . -B build &&
@@ -8,8 +8,8 @@
 #include <pybind11/pybind11.h>
 #include <Nutzer.hpp>
 #include <Angebot.hpp>
-#include <string>
 #include <Markt.hpp>
+#include <string>
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
@@ -17,8 +17,6 @@ using namespace Handelsplatz;
 
 PYBIND11_MODULE(handelsplatz, m) {
     m.doc() = "Handelsplatz";
-
-     m.doc() = "Handelsplatz";
 
     py::class_<Nutzer>(m, "Nutzer")
         .def(py::init<std::string,std::string>())        
@@ -45,7 +43,7 @@ PYBIND11_MODULE(handelsplatz, m) {
     py::class_<Markt>(m, "Markt")
         .def(py::init<>())
         .def("create_offer", &Markt::create_offer)
-        .def("get_offers", &Markt::get_offers)
+        .def("get_offer", &Markt::get_offer)
         .def("delete_offer", &Markt::delete_offer)
         //.def("accept_offer", &Markt::accept_offer)
         //.def("sell", &Markt::sell)
@@ -58,10 +56,4 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("edit_my_offer", &Markt::edit_my_offer)
         .def("get_size_offers", &Markt::get_size_offers)
         .def("add_offer_ids", &Markt::add_offer_ids);
-      
-
-
-    
-
-    
 }

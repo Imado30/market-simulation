@@ -1,48 +1,42 @@
-#pragma once
-#include "../include/Angebot.hpp"
-#include "../include/Nutzer.hpp"
 #include <iostream>
-#include <queue>
 #include <map>
 #include <vector>
+#include <queue>
+#include "../include/Nutzer.hpp"
+#include "../include/Angebot.hpp"
 
 namespace Handelsplatz{
 
     class Markt{
         public:
-            Markt();
-
             std::pair<int,Angebot> create_offer(std::string name, std::string ware, int menge, double preis);
 
-            std::map<int, Angebot> get_offers();
+            std::vector<Angebot> get_offer();
 
             void delete_offer(std::string name, std::string pw, int id);
 
-            //void accept_offer(std::string name, std::string pw, int id);
+            void accept_offer(std::string name, std::string pw, int id);
 
-            
             //Funktionen zum Handeln mit dem Markt 
-            //void sell(std::string name, std::string pw, std::string ware, int menge);
+            void sell(std::string name, std::string pw, std::string ware, int menge);
 
-            //void buy(std::string name, std::string pw, std::string ware, int menge);
+            void buy(std::string name, std::string pw, std::string ware, int menge);
+
+            void add_offer_ids();
 
             Nutzer create_user(std::string name, std::string pw);
 
+            Nutzer get_user(std::string name);
+
             void edit_user(std::string name, Nutzer n);
+
+            void edit_my_offer(Nutzer n, std::pair<int,Angebot> paar);
 
             int get_size_user();
 
             bool auth(std::string name, std::string pw);
 
             int get_size_offers();
-
-            void add_offer_ids();
-
-            void edit_my_offer(Nutzer n, std::pair<int, Angebot> paar);
-
-            Nutzer get_user(std::string name);
-
-
 
         private:
             /**
@@ -66,7 +60,6 @@ namespace Handelsplatz{
             std::queue<int> offer_ids;
 
             int max_o_id;
+
     };
-
-
 }

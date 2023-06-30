@@ -1,13 +1,22 @@
 from fastapi import FastAPI, Request
+from simple_term_menu import TerminalMenu
+
+try:
+    import handelsplatz
+except ImportError as e:
+  print(f"Importing the shared library 'handelsplatz' did not work.")
+  print(f"Is (a link to) the shared library 'handelsplatz.____.so' in the same directory as this python script?")
+  print(f"The import caused the following exception '{e}'")
+  print(f"Exiting")
+  exit(1)
+
 import os
 import uvicorn
-import handelsplatz
+from handelsplatz import Nutzer, Angebot,Markt
 
-from handelsplatz import Markt, Nutzer, Angebot
+markt = Markt()
 
-markt=Markt()
-
-rest_api=FastAPI()
+rest_api= FastAPI()
 
 @rest_api.get("/")
 async def welcome():
@@ -15,33 +24,16 @@ async def welcome():
 
 @rest_api.get("/get_offers")
 async def get_offers():
-    o=markt.get_offers()
-    out={}
-    for k,v in o.items():
-        a={ 'ID': k,
-            'Preis':v.get_preis(),
-            'Menge': v.get_anzahl(),
-            'Ware': v.get_warentyp()}
-
-        out[k]=a
-    return{"offers": out}
+    return{"offers": "x"}
 
 @rest_api.get('/nutzer/{benutzername}')
 async def create_nutzer(benutzername: str, request: Request):
     # Speichere den Nutzer in der Map 
-    try:
-        passwort=request.headers.get('pw')
-        erstellter_nutzer = markt.create_user(benutzername, passwort)
-        markt.edit_user(benutzername, erstellter_nutzer)
-        
-        return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
-    except:
-        return{"message": "failed"}
-
-
-@rest_api.get('/size')
-async def get_nutzer_size():
-    return {"user_size": markt.get_size_user()}
+    passwort=request.headers.get('pw')
+    erstellter_nutzer = markt.create_user(benutzername, passwort)
+    markt.edit_user(benutzername, erstellter_nutzer)
+    
+    return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
 
 
 @rest_api.get("/create_offer/{name}/{ware}/{menge}/{preis}")
@@ -57,6 +49,16 @@ async def create_offer(name: str,ware: str, menge: int, preis: float, request: R
         return{"status": "Benutzername oder Passwort falsch"}
 
 
+@rest_api.get('/size')
+async def get_nutzer_size():
+    return {"user_size": markt.get_size_user()}
+
+
+@rest_api.get('/size_offer')
+async def get_nutzer_size():
+    return {"offer_size": markt.get_size_offers()}
+
+
 @rest_api.get('/size_my_offer/{name}')
 async def my_offer_size(name: str, request: Request):
     pw = request.headers.get('pw')
@@ -65,16 +67,4 @@ async def my_offer_size(name: str, request: Request):
         return {"my_offer_size" : n.get_my_offer_size()}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
-
-
-@rest_api.get('/size_offer')
-async def get_nutzer_size():
-    return {"offer_size": markt.get_size_offers()}
-
-@rest_api.get('/authentification/{username}')
-async def authentification(username: str, request: Request):
-    pw= request.headers.get('pw')
-    if markt.auth(username, pw):
-        return{"success": "true"}
-    else:
-        return {"success": "false"}
+  

@@ -19,5 +19,4 @@ int Angebot::get_anzahl() const {
 double Angebot::get_preis() const {
     return preis;
 }
-
 }

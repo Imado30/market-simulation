@@ -5,9 +5,7 @@
 
 namespace Handelsplatz{
 
-
-    Nutzer::Nutzer(std::string benutzername, std::string passwort)
-    : benutzername(benutzername), passwort(passwort){}
+    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw){}
 
     int Nutzer::get_berry() const {
         return berry;
@@ -33,13 +31,9 @@ namespace Handelsplatz{
         }
     }
 
-    std::string Nutzer::get_pw(){
-        return passwort;
-    }
-
     bool Nutzer::find_ware(std::string ware)
     {
-        for (const auto& [handelsgut,menge]: inventar)
+        for (const auto& [handelsgut,menge] : inventar)
         {
             if (ware == handelsgut)
             {
@@ -68,7 +62,7 @@ namespace Handelsplatz{
 
     bool Nutzer::find_my_offer(int id)
     {
-        for (const auto& [id_,angebot]: my_offers)
+        for (const auto& [id_,angebot] : my_offers)
         {
             if (id == id_)
             {
@@ -80,7 +74,7 @@ namespace Handelsplatz{
 
     void Nutzer::remove_my_offer(int id) 
     {
-        for (const auto& [id_,angebot]: my_offers)
+        for (const auto& [id_,angebot] : my_offers)
         {
             if (id == id_)
             {
@@ -107,12 +101,14 @@ namespace Handelsplatz{
         return inventar;
     }
 
+    std::string Nutzer::get_pw()
+    {
+        return passwort;
+    }
+
     int Nutzer::get_my_offer_size()
     {
         return my_offers.size();
     }
 
-
 }
-
-

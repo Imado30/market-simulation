@@ -19,6 +19,4 @@ namespace Handelsplatz{
         int anzahl;
         double preis;
 };
-
-
 }
