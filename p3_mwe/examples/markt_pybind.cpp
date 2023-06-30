@@ -44,6 +44,7 @@ PYBIND11_MODULE(handelsplatz, m) {
     py::class_<Markt>(m, "Markt")
         .def(py::init<>())
         .def("create_offer", &Markt::create_offer)
+        .def("get_offers", &Markt::get_offers)
         .def("get_offer", &Markt::get_offer)
         .def("delete_offer", &Markt::delete_offer)
         //.def("accept_offer", &Markt::accept_offer)
@@ -55,6 +56,8 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("get_size_user", &Markt::get_size_user)
         .def("auth", &Markt::auth)
         .def("edit_my_offer", &Markt::edit_my_offer)
+        .def("get_preis", &Markt::get_preis)
+        .def("kursverlauf_berechnen", &Markt::kursverlauf_berechnen)
         .def("get_size_offers", &Markt::get_size_offers)
         .def("add_offer_ids", &Markt::add_offer_ids);
 }

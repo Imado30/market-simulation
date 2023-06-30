@@ -16,6 +16,8 @@ namespace Handelsplatz{
 
             std::vector<Angebot> get_offer();
 
+            std::map<int, Angebot> get_offers();   
+
             void delete_offer(int id);
 
             void accept_offer(std::string name, int id);
@@ -41,6 +43,10 @@ namespace Handelsplatz{
 
             int get_size_offers();
 
+            void kursverlauf_berechnen(std::string handelsgut);
+
+            int get_preis(std::string key);
+
         private:
             /**
              * @brief speichert die Nutzer mit key: Benutzername, value: zugehöriges Nutzerobjekt
@@ -63,5 +69,19 @@ namespace Handelsplatz{
             std::queue<int> offer_ids;
 
             int max_o_id;
-    };
+
+            std::map<std::string, int> preise = 
+            {
+            {"Bronze", 5000},
+            {"Silber", 5000},
+            {"Gold", 5000},
+            {"Diamant", 5000},
+            {"Rubin", 5000},
+            {"Saphir", 5000},
+            {"Smaragd", 5000},
+            {"Citrin", 5000},
+            {"Opal", 5000},
+            {"Amethyst", 5000},
+            };
+};
 }

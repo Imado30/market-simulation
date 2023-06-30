@@ -18,22 +18,24 @@ markt = Markt()
 
 rest_api= FastAPI()
 
+handelsgueter = ["Bronze", "Silber", "Gold", "Diamant", "Rubin", "Saphir", "Smaragd", "Citrin", "Opal", "Amethyst"]
+
 @rest_api.get("/")
 async def welcome():
     return{"nachricht":"Willkommen"}
 
-@rest_api.get("/get_offers")
-async def get_offers():
-    return{"offers": "x"}
 
 @rest_api.get('/nutzer/{benutzername}')
 async def create_nutzer(benutzername: str, request: Request):
     # Speichere den Nutzer in der Map 
-    passwort=request.headers.get('pw')
-    erstellter_nutzer = markt.create_user(benutzername, passwort)
-    markt.edit_user(benutzername, erstellter_nutzer)
-    
-    return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
+    try:
+        passwort=request.headers.get('pw')
+        erstellter_nutzer = markt.create_user(benutzername, passwort)
+        markt.edit_user(benutzername, erstellter_nutzer)
+        
+        return {"message": f"Nutzer {benutzername} erfolgreich erstellt."}
+    except:
+        return{"message": "failed"}
 
 
 @rest_api.get("/create_offer/{name}/{ware}/{menge}/{preis}")
@@ -134,3 +136,44 @@ async def get_inventar(name: str, request: Request):
         return{"get_inventar": out}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
+    
+
+@rest_api.get('/authentification/{username}')
+async def authentification(username: str, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(username, pw):
+        return{"success": "true"}
+    else:
+        return {"success": "false"}
+
+
+@rest_api.get("/preisberechnung/{handelsgut}")
+async def get_preis(handelsgut: str):
+    if handelsgut not in handelsgueter:
+        print("Dieses Gut ist momentan leider nicht verfügbar. Wir danken für Ihr Verständnis")
+    
+    markt.kursverlauf_berechnen(handelsgut)   
+        
+    return {"preis": markt.get_preis(handelsgut)}
+
+
+@rest_api.get("/preise/{handelsgut}")
+async def get_preis(handelsgut: str):
+    if handelsgut not in handelsgueter:
+        print("Dieses Gut ist momentan leider nicht verfügbar. Wir danken für Ihr Verständnis")
+        
+    return {"preis": markt.get_preis(handelsgut)}
+
+
+@rest_api.get("/get_offers")
+async def get_offers():
+    o=markt.get_offers()
+    out={}
+    for k,v in o.items():
+        a={ 'ID': k,
+            'Preis':v.get_preis(),
+            'Menge': v.get_anzahl(),
+            'Ware': v.get_warentyp()}
+
+        out[k]=a
+    return{"offers": out}
