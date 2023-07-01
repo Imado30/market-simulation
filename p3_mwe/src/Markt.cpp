@@ -159,7 +159,7 @@ namespace Handelsplatz
     void Markt::buy(std::string name, std::string ware, int menge){
 
         Nutzer n=user.at(name);
-        double cost=menge*preise.at(ware);
+        double cost=menge*preise.at(ware)*1.1;
 
         if (n.get_berry()<cost){
             throw std::logic_error("User cant afford transaction");
