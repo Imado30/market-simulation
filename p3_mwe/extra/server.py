@@ -141,10 +141,14 @@ async def get_inventar(name: str, request: Request):
 @rest_api.get('/authentification/{username}')
 async def authentification(username: str, request: Request):
     pw= request.headers.get('pw')
-    if markt.auth(username, pw):
-        return{"success": "true"}
-    else:
-        return {"success": "false"}
+    try:
+        if markt.auth(username, pw):
+            return{"success": "true"}
+        else:
+            return {"success": "false"}
+    
+    except:
+        return{"success": "false"}
 
 
 @rest_api.get("/preisberechnung/{handelsgut}")
@@ -177,3 +181,17 @@ async def get_offers():
 
         out[k]=a
     return{"offers": out}
+
+
+@rest_api.get("/buy/{name}/{ware}/{menge}")
+async def buy(name: str, ware: str, menge: int, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(name, pw):
+        try:
+            markt.buy(name, ware, menge)
+            return{"status": "Die Transaktion war erfolgreich. Vielen Dank für Ihren Einkauf"}
+        except:
+            return {"status":"Bei der Transaktion ist etwas schiefgelaufen. Bitte prüfen Sie ob Ihr Konto gedeckt ist."}
+    
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}

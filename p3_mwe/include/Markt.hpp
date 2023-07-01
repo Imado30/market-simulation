@@ -60,12 +60,6 @@ namespace Handelsplatz{
              */
             std::map<int, Angebot> offers;
 
-            /**
-             * @brief key: Handelsgut, value: value-struct(speichert Preise und Variablen zur Preisberechnung)
-             * 
-             */
-            //std::map<std::string, value> preise;
-
             std::queue<int> offer_ids;
 
             int max_o_id;

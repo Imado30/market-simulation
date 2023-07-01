@@ -25,13 +25,11 @@ def login():
         resp_json=resp.json()
         success=resp_json["success"]
 
-        while success=="false":
-            benutzername=input("Benutzername oder Passwort falsch. Bitter versuches sie es erneut. \n Benutzername: ")
-            passwort = input("Passwort: ")
-
-            resp=requests.get(url+f"authentification/{benutzername}")
-            resp_json=resp.json()
-            success=resp_json["success"]
+        if success=="false":
+            print("Benutzername oder Passwort falsch.")
+            login()
+        
+        print("Anmeldung erfolgreich")
         
 
     if auswahl == 1:
@@ -117,7 +115,7 @@ def login():
 
         if auswahl == 1:
             def marktplatz():
-                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","zurück zum Hauptmenü"], title="Marktplatz")
+                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","Direktkauf","zurück zum Hauptmenü"], title="Marktplatz")
                 auswahl = mp.show()
 
                 if auswahl == 0:
@@ -205,8 +203,20 @@ def login():
                             print(f"Preis für {handelsgut}: {pjson['preis']} Berry")
                             submenu()
                     submenu()
-
                 if auswahl == 4:
+                    print(handelsgueter)
+                    goods = input("Welches Gut möchten Sie erwerben? \n")
+                    while goods not in handelsgueter:
+                        goods = input("Scheinbar vertreiben wir dieses Produkt nicht, möchten Sie etwas Anderes erwerben?\n")
+
+                    amount = input("Wie viel Karat möchten Sie kaufen?\n")
+                    int_amount=int(amount)
+                    resp=requests.get(url+f"buy/{benutzername}/{goods}/{int_amount}", headers=header)
+                    resp_j=resp.json()
+                    print(resp_j["status"])
+                    menu()
+
+                if auswahl == 5:
                     menu()
 
             marktplatz()

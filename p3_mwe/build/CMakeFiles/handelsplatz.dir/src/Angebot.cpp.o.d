@@ -1,6 +1,6 @@
 CMakeFiles/handelsplatz.dir/src/Angebot.cpp.o: \
- /home/odin/poose_markt/p3_mwe/src/Angebot.cpp /usr/include/stdc-predef.h \
- /home/odin/poose_markt/p3_mwe/include/../include/Angebot.hpp \
+ /home/odin/Projekt3/p3_mwe/src/Angebot.cpp /usr/include/stdc-predef.h \
+ /home/odin/Projekt3/p3_mwe/include/../include/Angebot.hpp \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

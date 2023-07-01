@@ -107,6 +107,9 @@ namespace Handelsplatz
 
     bool Markt::auth(std::string name, std::string pw)
     {
+        if(user.find(name)==user.end()){
+            throw std::out_of_range("");
+        }
         if (user.at(name).get_pw() == pw)
         {
             return true;
@@ -151,6 +154,21 @@ namespace Handelsplatz
         {
             return -1; // gibt -1 zurück, um anzuzeigen, dass der Schlüssel nicht vorhanden ist
         }
+    }
+
+    void Markt::buy(std::string name, std::string ware, int menge){
+
+        Nutzer n=user.at(name);
+        double cost=menge*preise.at(ware);
+
+        if (n.get_berry()<cost){
+            throw std::logic_error("User cant afford transaction");
+        }
+
+        n.add(ware, menge);
+        n.set_berry(n.get_berry()-cost);
+
+        user.at(name)=n;
     }
 
 }
