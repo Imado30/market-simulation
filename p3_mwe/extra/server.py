@@ -195,3 +195,16 @@ async def buy(name: str, ware: str, menge: int, request: Request):
     
     else:
         return{"status": "Benutzername oder Passwort falsch"}
+
+@rest_api.get("/sell/{name}/{ware}/{menge}")
+async def sell(name: str, ware: str, menge: int, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(name, pw):
+        try:
+            markt.sell(name, ware, menge)
+            return{"status":"Transaktion erfolgreich"}
+        except:
+            return{"status":"Scheinbar besitzen Sie von der Ware, die Sie vertreiben möchten, nicht genug."}
+        
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}

@@ -85,7 +85,7 @@ def login():
                 if auswahl == 0:
                     resp = requests.get(f"http://127.0.0.1:8000/get_berry/{benutzername}", headers=header)
                     pjson = resp.json()
-                    print("In deinem Kontostand hast du: ", pjson["get_berry"], " Berry")
+                    print("Ihr Kontostand beträgt: ", pjson["get_berry"], " Berry")
                     menu()                  
 
                 if auswahl == 1:
@@ -115,7 +115,7 @@ def login():
 
         if auswahl == 1:
             def marktplatz():
-                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","Direktkauf","zurück zum Hauptmenü"], title="Marktplatz")
+                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","Direktkauf","Abstoßen","zurück zum Hauptmenü"], title="Marktplatz")
                 auswahl = mp.show()
 
                 if auswahl == 0:
@@ -216,7 +216,23 @@ def login():
                     print(resp_j["status"])
                     menu()
 
-                if auswahl == 5:
+                if auswahl==5:
+                    print(handelsgueter)
+                    goods=input("Welches Handelsgut möchten Sie verkaufen?\n")
+                    while goods not in handelsgueter:
+                        goods = input("Scheinbar handeln wir nicht mit diesem Produkt. Sie können ein anderes Produkt eingeben oder mit 'menu' zurück zum Hauptmenü gelangen.\n")
+                        if goods=="menu":
+                            menu()
+
+                    amount=input("Wie viel Karat möchten Sie verkaufen?\n")
+                    resp=requests.get(url+f"sell/{benutzername}/{goods}/{amount}", headers = header)
+                    resp_j=resp.json()
+                    print(resp_j["status"])
+
+                    menu()
+                        
+
+                if auswahl == 6:
                     menu()
 
             marktplatz()

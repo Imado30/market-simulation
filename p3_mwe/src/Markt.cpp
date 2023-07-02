@@ -171,4 +171,18 @@ namespace Handelsplatz
         user.at(name)=n;
     }
 
+    void Markt::sell(std::string name, std::string ware, int menge){
+        Nutzer n=user.at(name);
+        if (menge>n.get_menge(ware)){
+            throw std::logic_error("");
+        }
+        n.remove(ware, menge);
+
+        double value=preise.at(ware)*menge;
+        double fee=0.9;
+        n.set_berry(n.get_berry()+value*fee);
+
+        user.at(name)=n;
+    }
+
 }

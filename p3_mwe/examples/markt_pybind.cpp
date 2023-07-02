@@ -48,7 +48,7 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("get_offer", &Markt::get_offer)
         .def("delete_offer", &Markt::delete_offer)
         //.def("accept_offer", &Markt::accept_offer)
-        //.def("sell", &Markt::sell)
+        .def("sell", &Markt::sell)
         .def("buy", &Markt::buy)
         .def("create_user", &Markt::create_user)
         .def("get_user", &Markt::get_user)
