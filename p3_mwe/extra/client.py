@@ -117,7 +117,7 @@ def login():
 
         if auswahl == 1:
             def marktplatz():
-                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","zurück zum Hauptmenü"], title="Marktplatz")
+                mp = TerminalMenu(["Angebot erstellen","Angebot löschen","Markt stöbern","Marktpreise","Direktkauf","Abstoßen","zurück zum Hauptmenü"], title="Marktplatz")
                 auswahl = mp.show()
 
                 if auswahl == 0:
@@ -182,10 +182,23 @@ def login():
                 if auswahl == 2:
                     resp = requests.get(url + "get_offers")
                     resp_json=resp.json()
-                    print("ID           Ware          Menge     Preis")
+                    print("\nID           Ware          Menge     Preis")
                     for v in resp_json['offers'].values():
-                        print("\n", v['ID'],":   ",v['Ware']+"       ", v['Menge'],"kt     ", v['Preis'], "B \n")
+                        print(v['ID'],":   ",v['Ware']+"       ", v['Menge'],"kt     ", v['Preis'], "B \n")
 
+                    p3 = TerminalMenu(["Angebot kaufen","zurück zum Profil"], title= "Markt")
+                    auswahl2 = p3.show()
+
+                    if auswahl2 == 0:
+                        id = input("Gebe die ID vom Offer an")
+                        response = requests.get(f"http://127.0.0.1:8000/kaufen/{benutzername}/{int(id)}", headers=header)
+                        response_json = response.json()
+                        print(response_json["status"])
+                        menu()
+
+                    if auswahl2 == 1:
+                        menu()
+                        
                     menu()
 
 
@@ -207,6 +220,34 @@ def login():
                     submenu()
 
                 if auswahl == 4:
+                    print(handelsgueter)
+                    goods = input("Welches Gut möchten Sie erwerben? \n")
+                    while goods not in handelsgueter:
+                        goods = input("Scheinbar vertreiben wir dieses Produkt nicht, möchten Sie etwas Anderes erwerben?\n")
+
+                    amount = input("Wie viel Karat möchten Sie kaufen?\n")
+                    int_amount=int(amount)
+                    resp=requests.get(url+f"buy/{benutzername}/{goods}/{int_amount}", headers=header)
+                    resp_j=resp.json()
+                    print(resp_j["status"])
+                    menu()
+
+                if auswahl == 5:
+                    print(handelsgueter)
+                    goods=input("Welches Handelsgut möchten Sie verkaufen?\n")
+                    while goods not in handelsgueter:
+                        goods = input("Scheinbar handeln wir nicht mit diesem Produkt. Sie können ein anderes Produkt eingeben oder mit 'menu' zurück zum Hauptmenü gelangen.\n")
+                        if goods=="menu":
+                            menu()
+
+                    amount=input("Wie viel Karat möchten Sie verkaufen?\n")
+                    resp=requests.get(url+f"sell/{benutzername}/{goods}/{amount}", headers = header)
+                    resp_j=resp.json()
+                    print(resp_j["status"])
+                    menu()
+                        
+
+                if auswahl == 6:
                     menu()
 
             marktplatz()

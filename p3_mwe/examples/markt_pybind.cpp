@@ -1,6 +1,6 @@
 // uvicorn Server:rest_api --port 8000 --reload
 // cmake -S . -B build && cmake --build build && cmake --install build
-// python3 -m uvicorn Server:rest_api --port 8000 --reload
+// python3 -m uvicorn server:rest_api --port 8000 --reload
 //cmake -S . -B build &&
 //cmake --build build &&
 //cmake --install build
@@ -25,7 +25,10 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("find_ware", &Nutzer::find_ware)
         .def("get_menge", &Nutzer::get_menge)
         .def("add", &Nutzer::add)
+        .def("get_name", &Nutzer::get_name)
         .def("add_for_delete", &Nutzer::add_for_delete)
+        .def("sub_balance", &Nutzer::sub_balance)
+        .def("add_balance", &Nutzer::add_balance)
         .def("offer_einfügen", &Nutzer::offer_einfügen)
         .def("find_my_offer", &Nutzer::find_my_offer)
         .def("remove_my_offer", &Nutzer::remove_my_offer)
@@ -46,16 +49,18 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def("create_offer", &Markt::create_offer)
         .def("get_offers", &Markt::get_offers)
         .def("get_offer", &Markt::get_offer)
+        .def("get_owner", &Markt::get_owner)
         .def("delete_offer", &Markt::delete_offer)
-        //.def("accept_offer", &Markt::accept_offer)
-        //.def("sell", &Markt::sell)
-        //.def("buy", &Markt::buy);
+        .def("accept_offer", &Markt::accept_offer)
+        .def("sell", &Markt::sell)
+        .def("buy", &Markt::buy)
         .def("create_user", &Markt::create_user)
         .def("get_user", &Markt::get_user)
         .def("edit_user", &Markt::edit_user)
         .def("get_size_user", &Markt::get_size_user)
         .def("auth", &Markt::auth)
         .def("edit_my_offer", &Markt::edit_my_offer)
+        .def("offer_bearbeiten", &Markt::offer_bearbeiten)
         .def("get_preis", &Markt::get_preis)
         .def("kursverlauf_berechnen", &Markt::kursverlauf_berechnen)
         .def("get_size_offers", &Markt::get_size_offers)

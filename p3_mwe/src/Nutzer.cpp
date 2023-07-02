@@ -5,7 +5,7 @@
 
 namespace Handelsplatz{
 
-    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(1000000) {}
+    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(100000) {}
 
     double Nutzer::get_berry() const {
         return berry;
@@ -108,4 +108,18 @@ namespace Handelsplatz{
         return my_offers.size();
     }
 
+    void Nutzer::sub_balance(double betrag, int menge)
+    {
+        berry = berry - (menge * betrag);
+    }
+
+    void Nutzer::add_balance(double betrag, int menge)
+    {
+        berry = berry + (menge * betrag);
+    }
+
+    std::string Nutzer::get_name()
+    {
+        return benutzername;
+    }
 }

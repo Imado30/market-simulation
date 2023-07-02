@@ -47,6 +47,10 @@ namespace Handelsplatz{
 
             int get_preis(std::string key);
 
+            int offer_bearbeiten(int id, int anzahl);
+
+            Nutzer get_owner(int id);
+
         private:
             /**
              * @brief speichert die Nutzer mit key: Benutzername, value: zugehöriges Nutzerobjekt
@@ -60,11 +64,7 @@ namespace Handelsplatz{
              */
             std::map<int, Angebot> offers;
 
-            /**
-             * @brief key: Handelsgut, value: value-struct(speichert Preise und Variablen zur Preisberechnung)
-             * 
-             */
-            //std::map<std::string, value> preise;
+            std::map<int, Nutzer> owner;
 
             std::queue<int> offer_ids;
 

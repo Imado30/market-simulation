@@ -54,6 +54,7 @@ namespace Handelsplatz
         offer_ids.pop();
 
         offers.insert(std::pair<int, Angebot>(id, a));
+        owner.insert(std::pair<int,Nutzer>(id,n));                  //owner wird hinzugefügt
 
         std::cout << offers.size() << std::endl;
         n.remove(ware, menge);
@@ -151,6 +152,91 @@ namespace Handelsplatz
         {
             return -1; // gibt -1 zurück, um anzuzeigen, dass der Schlüssel nicht vorhanden ist
         }
+    }
+
+    int Markt::offer_bearbeiten(int id, int anzahl)
+    {
+        if (offers.find(id) != offers.end())
+        {
+            auto item = offers.find(id);
+            auto angebot = item->second;
+
+            if (angebot.get_anzahl() > anzahl)
+            {
+                int menge = angebot.get_anzahl();
+                int new_anzahl = menge - anzahl;
+                offers.erase(id);
+                return new_anzahl;
+            }
+        }
+        else
+        {
+            std::cout << "Die ID wurde nicht im Markt gefunden" << std::endl;
+        }
+        return 0;
+    }
+
+    void Markt::accept_offer(std::string name, int id)
+    {
+        Angebot a = offers.at(id);
+        int anzahl = a.get_anzahl();
+        double preis = a.get_preis();
+        std::string ware = a.get_warentyp();
+
+        Nutzer n = user.at(name);
+
+        if (n.get_berry() < preis*anzahl)
+        {
+            throw std::logic_error("you're broke :'( ");
+        }
+
+        n.add(ware, anzahl);
+        n.sub_balance(preis, anzahl);
+
+        Nutzer n2 = get_owner(id);
+        n2.add_balance(preis, anzahl);
+        offers.erase(id);
+
+        n2.remove_my_offer(id);
+        owner.erase(id);
+        offer_ids.push(id);
+
+        user.at(name) = n;
+        user.at(n2.get_name()) = n2;
+    }
+
+    Nutzer Markt::get_owner(int id)
+    {
+        return owner.at(id);
+    }
+
+    void Markt::sell(std::string name, std::string ware, int menge){
+        Nutzer n=user.at(name);
+        if (menge>n.get_menge(ware)){
+            throw std::logic_error("");
+        }
+        n.remove(ware, menge);
+
+        double value=preise.at(ware)*menge;
+        double fee=0.9;
+        n.set_berry(n.get_berry()+value*fee);
+
+        user.at(name)=n;
+    }
+
+    void Markt::buy(std::string name, std::string ware, int menge){
+
+        Nutzer n=user.at(name);
+        double cost=menge*preise.at(ware)*1.1;
+
+        if (n.get_berry()<cost){
+            throw std::logic_error("User cant afford transaction");
+        }
+
+        n.add(ware, menge);
+        n.set_berry(n.get_berry()-cost);
+
+        user.at(name)=n;
     }
 
 }

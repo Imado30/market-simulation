@@ -45,7 +45,7 @@ async def create_offer(name: str,ware: str, menge: int, preis: float, request: R
         n = markt.get_user(name)
         if ware not in n.get_inventar():
             return{"status" : "Du hast die Ware nicht im Inventar"}
-        elif n.get_menge() < menge or menge < 1:
+        elif n.get_menge(ware) < menge or menge < 1:
             return{"status" : "Das ging nicht. Gebe eine valide Anzahl ein"}
         else:
             paar = markt.create_offer(name,ware,menge,preis)
@@ -117,7 +117,7 @@ async def get_berry(name: str, request: Request):
     if markt.auth(name, pw):
         n = markt.get_user(name)
         markt.edit_user(name,n)
-        return {"get_berry" : n.get_berry()}
+        return {"get_berry": n.get_berry()}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
     
@@ -177,3 +177,44 @@ async def get_offers():
 
         out[k]=a
     return{"offers": out}
+
+
+@rest_api.get("/buy/{name}/{ware}/{menge}")
+async def buy(name: str, ware: str, menge: int, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(name, pw):
+        try:
+            markt.buy(name, ware, menge)
+            return{"status": "Die Transaktion war erfolgreich. Vielen Dank für Ihren Einkauf"}
+        except:
+            return {"status":"Bei der Transaktion ist etwas schiefgelaufen. Bitte prüfen Sie ob Ihr Konto gedeckt ist."}
+    
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}
+
+
+@rest_api.get("/sell/{name}/{ware}/{menge}")
+async def sell(name: str, ware: str, menge: int, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(name, pw):
+        try:
+            markt.sell(name, ware, menge)
+            return{"status":"Transaktion erfolgreich"}
+        except:
+            return{"status":"Scheinbar besitzen Sie von der Ware, die Sie vertreiben möchten, nicht genug."}
+        
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}
+
+
+@rest_api.get("/kaufen/{name}/{id}")
+async def kaufen(name: str, id: int, request: Request):
+    pw= request.headers.get('pw')
+    if markt.auth(name, pw):
+        try:
+            markt.accept_offer(name, id)
+            return{"status": "Die Ware befindet sich nun in Ihrem Inventar"}
+        except:
+            return{"status": "you're broke :'( "}
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}
