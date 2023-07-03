@@ -14,13 +14,8 @@ markt = Markt()
 
 def update_all():
     for handelsgut in handelsgueter:
-        response = requests.get(url + f"preisberechnung/{handelsgut}")
-        if response.status_code == 200:
-            data = response.json()
-            preis = data["preis"]
-            print(f"Preis für {handelsgut} wurde aktualisiert. Neuer Preis: {preis} Berry")
-        else:
-            print(f"Fehler beim Aktualisieren des Preises für {handelsgut}")
+        requests.get(url + f"preisberechnung/{handelsgut}")
+
 
 
 def login():
@@ -106,7 +101,7 @@ def login():
                     pjson = resp.json()
                     print("Ware:         Menge:")
                     for v in pjson["get_inventar"].values():
-                        print(v['Ware'], ":      ", v['Menge'], "Karat\n")
+                        print(v['Ware'], ":    ", v['Menge'], "Karat\n")
                     menu()
 
                 if auswahl == 2:
@@ -218,7 +213,7 @@ def login():
                     def submenu():
                         submenu_list = handelsgueter.copy()
                         submenu_list.append("Zurück zum Marktplatz")
-                        submenu_menu = TerminalMenu(submenu_list, title="Markt stöbern")
+                        submenu_menu = TerminalMenu(submenu_list, title="Marktpreise")
                         submenu_choice = submenu_menu.show()
 
                         if submenu_choice == len(handelsgueter):
@@ -232,32 +227,50 @@ def login():
                     submenu()
 
                 if auswahl == 4:
-                    print(handelsgueter)
-                    goods = input("Welches Gut möchten Sie erwerben? \n")
-                    while goods not in handelsgueter:
-                        goods = input("Scheinbar vertreiben wir dieses Produkt nicht, möchten Sie etwas Anderes erwerben?\n")
+                    def submenu2():
+                        submenu_list = handelsgueter.copy()
+                        submenu_list.append("Zurück zum Marktplatz")
+                        submenu_menu = TerminalMenu(submenu_list, title="im Markt kaufen")
+                        submenu_choice = submenu_menu.show()
 
-                    amount = input("Wie viel Karat möchten Sie kaufen?\n")
-                    int_amount=int(amount)
-                    resp=requests.get(url+f"buy/{benutzername}/{goods}/{int_amount}", headers=header)
-                    resp_j=resp.json()
-                    print(resp_j["status"])
-                    menu()
+                        if submenu_choice == len(handelsgueter):
+                            marktplatz()
+                        else:
+                            submenu_list[submenu_choice]
+                            print(submenu_list[submenu_choice])
+                            amount = input("Wie viel Karat möchten Sie kaufen?\n")
+                            int_amount=int(amount)
+                            goods = submenu_list[submenu_choice]
+                            resp=requests.get(url+f"buy/{benutzername}/{goods}/{int_amount}", headers=header)
+                            resp_j=resp.json()
+                            print(resp_j["status"])
+                            update_all()
+                            submenu2()
+                    submenu2()
+
 
                 if auswahl == 5:
-                    print(handelsgueter)
-                    goods=input("Welches Handelsgut möchten Sie verkaufen?\n")
-                    while goods not in handelsgueter:
-                        goods = input("Scheinbar handeln wir nicht mit diesem Produkt. Sie können ein anderes Produkt eingeben oder mit 'menu' zurück zum Hauptmenü gelangen.\n")
-                        if goods=="menu":
-                            menu()
+                    def submenu2():
+                        submenu_list = handelsgueter.copy()
+                        submenu_list.append("Zurück zum Marktplatz")
+                        submenu_menu = TerminalMenu(submenu_list, title="im Markt verkaufen")
+                        submenu_choice = submenu_menu.show()
 
-                    amount=input("Wie viel Karat möchten Sie verkaufen?\n")
-                    resp=requests.get(url+f"sell/{benutzername}/{goods}/{amount}", headers = header)
-                    resp_j=resp.json()
-                    print(resp_j["status"])
-                    update_all()
-                    menu()
+                        if submenu_choice == len(handelsgueter):
+                            marktplatz()
+                        else:
+                            submenu_list[submenu_choice]
+                            print(submenu_list[submenu_choice])
+                            amount=input("Wie viel Karat möchten Sie verkaufen?\n")
+                            int_amount=int(amount)
+                            goods = submenu_list[submenu_choice]
+                            resp=requests.get(url+f"sell/{benutzername}/{goods}/{int_amount}", headers = header)
+                            resp_j=resp.json()
+                            print(resp_j["status"])
+                            update_all()
+                            submenu2()
+                    submenu2()
+                
                         
 
                 if auswahl == 6:
@@ -266,9 +279,3 @@ def login():
             marktplatz()
     menu() 
 login()
-
-
-def update_all():
-    for handelsgut in handelsgueter:
-        requests.get(url + f"preisberechnung/{handelsgut}")
-update_all()

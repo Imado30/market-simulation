@@ -13,45 +13,28 @@ namespace Handelsplatz{
             Markt();
 
             std::pair<int,Angebot> create_offer(std::string name, std::string ware, int menge, double preis);
-
-            std::vector<Angebot> get_offer();
-
-            std::map<int, Angebot> get_offers();   
-
             void delete_offer(int id);
-
             void accept_offer(std::string name, int id);
 
             //Funktionen zum Handeln mit dem Markt 
             void sell(std::string name, std::string ware, int menge);
-
             void buy(std::string name, std::string ware, int menge);
 
             void add_offer_ids();
 
             Nutzer create_user(std::string name, std::string pw);
-
-            Nutzer get_user(std::string name);
-
             void edit_user(std::string name, Nutzer n);
-
-            void edit_my_offer(Nutzer n, std::pair<int,Angebot> paar);
-
-            int get_size_user();
-
             bool auth(std::string name, std::string pw);
 
-            int get_size_offers();
-
             void kursverlauf_berechnen(std::string handelsgut);
-
-            int get_preis(std::string key);
-
-            int offer_bearbeiten(int id, int anzahl);
-
-            Nutzer get_owner(int id);
-
             void update_all();
+
+            std::map<int, Angebot> get_offers();   
+            int get_preis(std::string key);
+            int get_size_user();
+            int get_size_offers();
+            Nutzer get_owner(int id);
+            Nutzer get_user(std::string name);
 
 
         private:

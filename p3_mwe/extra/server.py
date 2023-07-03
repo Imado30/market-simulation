@@ -169,7 +169,7 @@ async def get_inventar(name: str, request: Request):
             a={ 'Ware': k,
                 'Menge': v}
             out[k]=a
-            return{"get_inventar": out}
+        return{"get_inventar": out}
     else:
         return{"status": "Benutzername oder Passwort falsch"}
     

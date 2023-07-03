@@ -13,19 +13,6 @@ namespace Handelsplatz
         }
     }
 
-    std::vector<Angebot> Markt::get_offer()
-    {
-        std::vector<Angebot> out;
-        for (int i = 0; i < max_o_id; i++)
-        {
-            if (offers.find(i) != offers.end())
-            {
-                out.push_back(offers.at(i));
-            }
-        }
-        return out;
-    }
-
     std::map<int, Angebot> Markt::get_offers()
     {
         return offers;
@@ -92,14 +79,6 @@ namespace Handelsplatz
         user.at(name) = n;
     }
 
-    void Markt::edit_my_offer(Nutzer n, std::pair<int, Angebot> paar)
-    {
-        int id = paar.first;
-        Angebot a = paar.second;
-        // n.my_offers.at(id) = a;
-        // n.offers.at(id) = a;
-    }
-
     int Markt::get_size_user()
     {
         return user.size();
@@ -158,28 +137,6 @@ namespace Handelsplatz
         {
             return -1; // gibt -1 zurück, um anzuzeigen, dass der Schlüssel nicht vorhanden ist
         }
-    }
-
-    int Markt::offer_bearbeiten(int id, int anzahl)
-    {
-        if (offers.find(id) != offers.end())
-        {
-            auto item = offers.find(id);
-            auto angebot = item->second;
-
-            if (angebot.get_anzahl() > anzahl)
-            {
-                int menge = angebot.get_anzahl();
-                int new_anzahl = menge - anzahl;
-                offers.erase(id);
-                return new_anzahl;
-            }
-        }
-        else
-        {
-            std::cout << "Die ID wurde nicht im Markt gefunden" << std::endl;
-        }
-        return 0;
     }
 
     void Markt::accept_offer(std::string name, int id)

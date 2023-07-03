@@ -11,22 +11,27 @@ namespace Handelsplatz{
     {
         public:
             Nutzer(std::string benutzername, std::string passwort);
+            
             double get_berry() const;
             void set_berry(double betrag);
             void sub_balance(double betrag, int menge);
             void add_balance(double betrag, int menge);
+
             bool find_ware(std::string ware);
+            bool find_my_offer(int id);
+
+            void offer_einfügen(std::pair<int,Angebot> paar);
             void add(const std::string& handelsgut, int anzahl);
             void add_tuple(std::pair<std::string,int> paar);
             std::pair<std::string,int> add_for_delete(int ID);
+
             void remove(const std::string& handelsgut, int anzahl);
             void remove_my_offer(int id);
-            int get_menge(std::string ware);
-            void offer_einfügen(std::pair<int,Angebot> paar);
-            int get_my_offer_size();
-            bool find_my_offer(int id);
+
             std::map<int, Angebot> get_my_offer();
             std::map<std::string,int> get_inventar();
+            int get_menge(std::string ware);
+            int get_my_offer_size();
             std::string get_pw();
             std::string get_name();
 
