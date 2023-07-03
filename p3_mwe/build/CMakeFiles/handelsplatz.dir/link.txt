@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -flto -shared  -o handelsplatz.cpython-310-x86_64-linux-gnu.so CMakeFiles/handelsplatz.dir/examples/markt_pybind.cpp.o CMakeFiles/handelsplatz.dir/src/Angebot.cpp.o CMakeFiles/handelsplatz.dir/src/Markt.cpp.o CMakeFiles/handelsplatz.dir/src/Nutzer.cpp.o 
