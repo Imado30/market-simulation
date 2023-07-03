@@ -54,10 +54,9 @@ namespace Handelsplatz
         offer_ids.pop();
 
         offers.insert(std::pair<int, Angebot>(id, a));
-        owner.insert(std::pair<int,Nutzer>(id,n));                  //owner wird hinzugefügt
+        owner.insert(std::pair<int, Nutzer>(id, n));                // owner wird hinzugefügt
 
         std::cout << offers.size() << std::endl;
-        n.remove(ware, menge);
         std::cout << "Angebot erfolgreich erstellt" << std::endl;
         return std::pair<int, Angebot>(id, a);
     }
@@ -120,8 +119,7 @@ namespace Handelsplatz
         return offers.size();
     }
 
-    void Markt::kursverlauf_berechnen(std::string handelsgut)
-    {
+    void Markt::kursverlauf_berechnen(std::string handelsgut){
         double tendenz = 0.1;
         double streuung = 0.2;
         double dt = 0.01;
@@ -131,15 +129,23 @@ namespace Handelsplatz
         double sqdt = std::sqrt(dt);
         int kurs[anzahl];
         kurs[0] = start;
-        for (int i = 0; i < anzahl - 1; i++)
-        {
+        for (int i = 0; i < anzahl - 1; i++) {
             double Y = 2.0 * (static_cast<double>(std::rand()) / RAND_MAX) - 1.0;
-            kurs[i + 1] = kurs[i] * (1 + tendenz * dt + streuung * sqdt * Y);
+            kurs[i+1] = kurs[i] * (1 + tendenz * dt + streuung * sqdt * Y);
         }
 
         // Runden auf 2 Dezimalstellen
         double gerundeterPreis = std::round(kurs[anzahl - 1] * 100) / 100;
         preise[handelsgut] = gerundeterPreis;
+        }
+
+
+    void Markt::update_all()
+    {
+        for (auto handelsgut : handelsgueter)
+        {
+            kursverlauf_berechnen(handelsgut);
+        }
     }
 
     int Markt::get_preis(std::string key)
@@ -185,7 +191,7 @@ namespace Handelsplatz
 
         Nutzer n = user.at(name);
 
-        if (n.get_berry() < preis*anzahl)
+        if (n.get_berry() < preis * anzahl)
         {
             throw std::logic_error("you're broke :'( ");
         }
@@ -210,33 +216,37 @@ namespace Handelsplatz
         return owner.at(id);
     }
 
-    void Markt::sell(std::string name, std::string ware, int menge){
-        Nutzer n=user.at(name);
-        if (menge>n.get_menge(ware)){
+    void Markt::sell(std::string name, std::string ware, int menge)
+    {
+        Nutzer n = user.at(name);
+        if (menge > n.get_menge(ware))
+        {
             throw std::logic_error("");
         }
         n.remove(ware, menge);
 
-        double value=preise.at(ware)*menge;
-        double fee=0.9;
-        n.set_berry(n.get_berry()+value*fee);
+        double value = preise.at(ware) * menge;
+        double fee = 0.9;
+        n.set_berry(n.get_berry() + value * fee);
 
-        user.at(name)=n;
+        user.at(name) = n;
     }
 
-    void Markt::buy(std::string name, std::string ware, int menge){
+    void Markt::buy(std::string name, std::string ware, int menge)
+    {
 
-        Nutzer n=user.at(name);
-        double cost=menge*preise.at(ware)*1.1;
+        Nutzer n = user.at(name);
+        double cost = menge * preise.at(ware) * 1.1;
 
-        if (n.get_berry()<cost){
+        if (n.get_berry() < cost)
+        {
             throw std::logic_error("User cant afford transaction");
         }
 
         n.add(ware, menge);
-        n.set_berry(n.get_berry()-cost);
+        n.set_berry(n.get_berry() - cost);
 
-        user.at(name)=n;
+        user.at(name) = n;
     }
 
 }

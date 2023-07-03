@@ -50,6 +50,7 @@ async def create_offer(name: str,ware: str, menge: int, preis: float, request: R
         else:
             paar = markt.create_offer(name,ware,menge,preis)
             n.offer_einfügen(paar)
+            n.remove(ware,menge)
             markt.edit_user(name,n)
             return{"status":"Angebot erfolgreich erstelt"}
     else:
@@ -102,7 +103,8 @@ async def delete_my_offer(name: str, id: int, request: Request):
         if id not in n.get_my_offer():
             return {"status" : "Du hast kein Angebot mit dieser ID erstellt"}
         else:
-            n.add_for_delete(id)
+            paar = n.add_for_delete(id)
+            n.add_tuple(paar)
             n.remove_my_offer(id)
             markt.delete_offer(id)
             markt.edit_user(name,n)
@@ -121,21 +123,6 @@ async def get_berry(name: str, request: Request):
     else:
         return{"status": "Benutzername oder Passwort falsch"}
     
-
-@rest_api.get('/get_inventar/{name}')
-async def get_inventar(name: str, request: Request):
-    pw = request.headers.get('pw')
-    if markt.auth(name, pw):
-        n = markt.get_user(name)
-        markt.edit_user(name,n)
-        mo = n.get_inventar()
-        out={}
-        for k,v in mo.items():
-            a={ 'Ware': k,'Menge': v}
-            out=a
-        return{"get_inventar": out}
-    else:
-        return{"status": "Benutzername oder Passwort falsch"}
     
 
 @rest_api.get('/authentification/{username}')
@@ -148,13 +135,18 @@ async def authentification(username: str, request: Request):
 
 
 @rest_api.get("/preisberechnung/{handelsgut}")
-async def get_preis(handelsgut: str):
-    if handelsgut not in handelsgueter:
-        print("Dieses Gut ist momentan leider nicht verfügbar. Wir danken für Ihr Verständnis")
+async def preisberechnung(handelsgut: str):
     
-    markt.kursverlauf_berechnen(handelsgut)   
-        
+    markt.kursverlauf_berechnen(handelsgut)
     return {"preis": markt.get_preis(handelsgut)}
+
+
+@rest_api.get("/update")
+async def update():
+
+    markt.update_all()  
+        
+    return {"preis": "0"}
 
 
 @rest_api.get("/preise/{handelsgut}")
@@ -164,6 +156,23 @@ async def get_preis(handelsgut: str):
         
     return {"preis": markt.get_preis(handelsgut)}
 
+
+
+@rest_api.get('/get_inventar/{name}')
+async def get_inventar(name: str, request: Request):
+    pw = request.headers.get('pw')
+    if markt.auth(name, pw):
+        n = markt.get_user(name)
+        mo = n.get_inventar()
+        out={}
+        for k,v in mo.items():
+            a={ 'Ware': k,
+                'Menge': v}
+            out[k]=a
+            return{"get_inventar": out}
+    else:
+        return{"status": "Benutzername oder Passwort falsch"}
+    
 
 @rest_api.get("/get_offers")
 async def get_offers():
@@ -211,10 +220,13 @@ async def sell(name: str, ware: str, menge: int, request: Request):
 async def kaufen(name: str, id: int, request: Request):
     pw= request.headers.get('pw')
     if markt.auth(name, pw):
-        try:
-            markt.accept_offer(name, id)
-            return{"status": "Die Ware befindet sich nun in Ihrem Inventar"}
-        except:
-            return{"status": "you're broke :'( "}
+        if id in markt.get_offers():
+            try:
+                markt.accept_offer(name, id)
+                return{"status": "Die Ware befindet sich nun in Ihrem Inventar"}
+            except:
+                return{"status": "you're broke :'( "}
+        else:
+            return{"status": "Das Angebot existiert nicht"}
     else:
         return{"status": "Benutzername oder Passwort falsch"}

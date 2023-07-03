@@ -12,6 +12,17 @@ handelsgueter = ["Bronze", "Silber", "Gold", "Diamant", "Rubin", "Saphir", "Smar
 
 markt = Markt()
 
+def update_all():
+    for handelsgut in handelsgueter:
+        response = requests.get(url + f"preisberechnung/{handelsgut}")
+        if response.status_code == 200:
+            data = response.json()
+            preis = data["preis"]
+            print(f"Preis für {handelsgut} wurde aktualisiert. Neuer Preis: {preis} Berry")
+        else:
+            print(f"Fehler beim Aktualisieren des Preises für {handelsgut}")
+
+
 def login():
     l = TerminalMenu(["Einloggen", "Registrieren"],title="Login")
     auswahl = l.show()
@@ -93,15 +104,17 @@ def login():
                 if auswahl == 1:
                     resp = requests.get(f"http://127.0.0.1:8000/get_inventar/{benutzername}", headers=header)
                     pjson = resp.json()
-                    print(pjson["get_inventar"])
+                    print("Ware:         Menge:")
+                    for v in pjson["get_inventar"].values():
+                        print(v['Ware'], ":      ", v['Menge'], "Karat\n")
                     menu()
 
                 if auswahl == 2:
                     resp = requests.get(f"http://127.0.0.1:8000/get_my_offer/{benutzername}", headers=header)
                     pjson6 = resp.json()
-                    print("\nID:              Ware:          Menge:       Preis:")
+                    print("\nID:         Ware:          Menge:       Preis:")
                     for v in pjson6['offers'].values():
-                        print(v['ID'],":   ",v['Ware']+"       ", v['Menge'],"karat     ", v['Preis'], "Berry \n")
+                        print(v['ID'],":   ",v['Ware']+"       ", v['Menge'],"Karat     ", v['Preis'], "Berry \n")
 
                     p2 = TerminalMenu(["zurück zum Profil"])
                     auswahl2 = p2.show()
@@ -121,12 +134,10 @@ def login():
                 auswahl = mp.show()
 
                 if auswahl == 0:
-                    resp = requests.get(f"http://127.0.0.1:8000/get_inventar/{benutzername}", headers=header)
-                    pjson = resp.json()
-                    print("Du hast folgende Waren in deinem Inventar:  ", pjson["get_inventar"], "\n Wähle eine Ware aus")
+                    print("Wähle eine Ware aus deinem Inventar, dass du verkaufen willst")
                     ware = input()
 
-                    print("Wie viel ", ware, " möchtest du verkaufen?\n")
+                    print("Wie viel ", ware, " möchtest du verkaufen?")
                     menge = input()
                     while True:
                         try:
@@ -135,7 +146,7 @@ def login():
                         except ValueError:
                             menge = input("Das ging nicht. Gebe eine valide Anzahl ein\n")
 
-                    print("Wie teuer soll 1x", ware, "sein? Währung: Berry \n")
+                    print("Wie teuer soll 1x", ware, "sein? Währung: Berry")
                     preis = input()
                     while True:
                         try:
@@ -190,10 +201,11 @@ def login():
                     auswahl2 = p3.show()
 
                     if auswahl2 == 0:
-                        id = input("Gebe die ID vom Offer an")
+                        id = input("Gebe die ID vom Angebot an, dass du kaufen willst\n")
                         response = requests.get(f"http://127.0.0.1:8000/kaufen/{benutzername}/{int(id)}", headers=header)
                         response_json = response.json()
                         print(response_json["status"])
+                        update_all()
                         menu()
 
                     if auswahl2 == 1:
@@ -244,6 +256,7 @@ def login():
                     resp=requests.get(url+f"sell/{benutzername}/{goods}/{amount}", headers = header)
                     resp_j=resp.json()
                     print(resp_j["status"])
+                    update_all()
                     menu()
                         
 
@@ -253,3 +266,9 @@ def login():
             marktplatz()
     menu() 
 login()
+
+
+def update_all():
+    for handelsgut in handelsgueter:
+        requests.get(url + f"preisberechnung/{handelsgut}")
+update_all()

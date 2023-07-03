@@ -51,6 +51,9 @@ namespace Handelsplatz{
 
             Nutzer get_owner(int id);
 
+            void update_all();
+
+
         private:
             /**
              * @brief speichert die Nutzer mit key: Benutzername, value: zugehöriges Nutzerobjekt
@@ -70,7 +73,9 @@ namespace Handelsplatz{
 
             int max_o_id;
 
-            std::map<std::string, int> preise = 
+            std::vector<std::string> handelsgueter = {"Bronze", "Silber", "Gold", "Diamant", "Rubin", "Saphir", "Smaragd", "Citrin", "Opal", "Amethyst"};
+
+            std::map<std::string, double> preise = 
             {
             {"Bronze", 5000},
             {"Silber", 5000},

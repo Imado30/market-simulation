@@ -17,7 +17,8 @@ namespace Handelsplatz{
             void add_balance(double betrag, int menge);
             bool find_ware(std::string ware);
             void add(const std::string& handelsgut, int anzahl);
-            void add_for_delete(int ID);
+            void add_tuple(std::pair<std::string,int> paar);
+            std::pair<std::string,int> add_for_delete(int ID);
             void remove(const std::string& handelsgut, int anzahl);
             void remove_my_offer(int id);
             int get_menge(std::string ware);
