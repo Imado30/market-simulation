@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -Dhandelsplatz_EXPORTS
 
-CXX_INCLUDES = -I/home/odin/Projekt3/p3_mwe/include -I/home/odin/Projekt3/p3_mwe/external -isystem /usr/include/python3.10
+CXX_INCLUDES = -I/home/odin/poose_markt/p3_mwe/include -I/home/odin/poose_markt/p3_mwe/external -isystem /usr/include/python3.10
 
 CXX_FLAGS = -fPIC -fvisibility=hidden -flto -fno-fat-lto-objects
 

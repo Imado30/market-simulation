@@ -7,10 +7,5 @@
 
 int main()
 {
-    Handelsplatz::Markt x;
-
-    Handelsplatz::Nutzer n("Hi","lol");
-    Handelsplatz::Angebot a("gold",4,20);
-    //n.offer_einfügen(12345, a);
-    n.get_my_offer();
+    return 0;
 }

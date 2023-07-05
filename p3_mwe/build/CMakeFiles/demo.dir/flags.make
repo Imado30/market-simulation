@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/odin/Projekt3/p3_mwe/include -I/home/odin/Projekt3/p3_mwe/external
+CXX_INCLUDES = -I/home/odin/poose_markt/p3_mwe/include -I/home/odin/poose_markt/p3_mwe/external
 
 CXX_FLAGS = 
 

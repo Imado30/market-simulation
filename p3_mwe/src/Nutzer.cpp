@@ -5,7 +5,7 @@
 
 namespace Handelsplatz{
 
-    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(1000000) {}
+    Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(100000) {}
 
     double Nutzer::get_berry() const {
         return berry;
@@ -19,7 +19,7 @@ namespace Handelsplatz{
         inventar[handelsgut] += anzahl;
     }
 
-    void Nutzer::add_for_delete(int ID)
+    std::pair<std::string,int> Nutzer::add_for_delete(int ID)
     {
         auto item = my_offers.find(ID);
         auto angebot = item->second;
@@ -27,7 +27,14 @@ namespace Handelsplatz{
         std::string ware = angebot.get_warentyp();
         int anzahl = angebot.get_anzahl();
 
-        inventar.insert(std::pair<std::string,int>(ware,anzahl));
+        return std::pair<std::string,int>(ware,anzahl);
+    }
+
+    void Nutzer::add_tuple(std::pair<std::string,int> paar)
+    {
+        std::string handelsgut = paar.first;
+        int menge = paar.second;
+        inventar[handelsgut] += menge;
     }
 
     void Nutzer::remove(const std::string& handelsgut, int anzahl) {
@@ -108,4 +115,18 @@ namespace Handelsplatz{
         return my_offers.size();
     }
 
+    void Nutzer::sub_balance(double betrag, int menge)
+    {
+        berry = berry - (menge * betrag);
+    }
+
+    void Nutzer::add_balance(double betrag, int menge)
+    {
+        berry = berry + (menge * betrag);
+    }
+
+    std::string Nutzer::get_name()
+    {
+        return benutzername;
+    }
 }
