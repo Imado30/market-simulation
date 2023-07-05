@@ -41,7 +41,7 @@ namespace Handelsplatz
         offer_ids.pop();
 
         offers.insert(std::pair<int, Angebot>(id, a));
-        owner.insert(std::pair<int, Nutzer>(id, n)); // owner wird hinzugefügt
+        owner.insert(std::pair<int, Nutzer>(id, n));                // owner wird hinzugefügt
 
         std::cout << offers.size() << std::endl;
         std::cout << "Angebot erfolgreich erstellt" << std::endl;
