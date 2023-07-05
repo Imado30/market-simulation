@@ -41,7 +41,7 @@ namespace Handelsplatz
         offer_ids.pop();
 
         offers.insert(std::pair<int, Angebot>(id, a));
-        owner.insert(std::pair<int, Nutzer>(id, n));                // owner wird hinzugefügt
+        owner.insert(std::pair<int, Nutzer>(id, n)); // owner wird hinzugefügt
 
         std::cout << offers.size() << std::endl;
         std::cout << "Angebot erfolgreich erstellt" << std::endl;
@@ -98,7 +98,8 @@ namespace Handelsplatz
         return offers.size();
     }
 
-    void Markt::kursverlauf_berechnen(std::string handelsgut){
+    void Markt::kursverlauf_berechnen(std::string handelsgut)
+    {
         double tendenz = 0.1;
         double streuung = 0.2;
         double dt = 0.01;
@@ -108,16 +109,16 @@ namespace Handelsplatz
         double sqdt = std::sqrt(dt);
         int kurs[anzahl];
         kurs[0] = start;
-        for (int i = 0; i < anzahl - 1; i++) {
+        for (int i = 0; i < anzahl - 1; i++)
+        {
             double Y = 2.0 * (static_cast<double>(std::rand()) / RAND_MAX) - 1.0;
-            kurs[i+1] = kurs[i] * (1 + tendenz * dt + streuung * sqdt * Y);
+            kurs[i + 1] = kurs[i] * (1 + tendenz * dt + streuung * sqdt * Y);
         }
 
         // Runden auf 2 Dezimalstellen
         double gerundeterPreis = std::round(kurs[anzahl - 1] * 100) / 100;
         preise[handelsgut] = gerundeterPreis;
-        }
-
+    }
 
     void Markt::update_all()
     {

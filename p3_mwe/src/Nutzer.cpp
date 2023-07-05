@@ -3,23 +3,27 @@
 #include <string>
 #include <map>
 
-namespace Handelsplatz{
+namespace Handelsplatz
+{
 
     Nutzer::Nutzer(std::string name, std::string pw) : benutzername(name), passwort(pw), berry(100000) {}
 
-    double Nutzer::get_berry() const {
+    double Nutzer::get_berry() const
+    {
         return berry;
     }
 
-    void Nutzer::set_berry(double betrag){
+    void Nutzer::set_berry(double betrag)
+    {
         berry = betrag;
     }
 
-    void Nutzer::add(const std::string& handelsgut, int anzahl) {
+    void Nutzer::add(const std::string &handelsgut, int anzahl)
+    {
         inventar[handelsgut] += anzahl;
     }
 
-    std::pair<std::string,int> Nutzer::add_for_delete(int ID)
+    std::pair<std::string, int> Nutzer::add_for_delete(int ID)
     {
         auto item = my_offers.find(ID);
         auto angebot = item->second;
@@ -27,31 +31,38 @@ namespace Handelsplatz{
         std::string ware = angebot.get_warentyp();
         int anzahl = angebot.get_anzahl();
 
-        return std::pair<std::string,int>(ware,anzahl);
+        return std::pair<std::string, int>(ware, anzahl);
     }
 
-    void Nutzer::add_tuple(std::pair<std::string,int> paar)
+    void Nutzer::add_tuple(std::pair<std::string, int> paar)
     {
         std::string handelsgut = paar.first;
         int menge = paar.second;
         inventar[handelsgut] += menge;
     }
 
-    void Nutzer::remove(const std::string& handelsgut, int anzahl) {
-        if (inventar.find(handelsgut) != inventar.end()) {
-            if (inventar[handelsgut] >= anzahl) {
+    void Nutzer::remove(const std::string &handelsgut, int anzahl)
+    {
+        if (inventar.find(handelsgut) != inventar.end())
+        {
+            if (inventar[handelsgut] >= anzahl)
+            {
                 inventar[handelsgut] -= anzahl;
-            } else {
+            }
+            else
+            {
                 std::cout << "Nicht genug " << handelsgut << " im Inventar!" << std::endl;
             }
-        } else {
+        }
+        else
+        {
             std::cout << "Handelsgut " << handelsgut << " nicht im Inventar!" << std::endl;
         }
     }
 
     bool Nutzer::find_ware(std::string ware)
     {
-        for (const auto& [handelsgut,menge] : inventar)
+        for (const auto &[handelsgut, menge] : inventar)
         {
             if (ware == handelsgut)
             {
@@ -72,7 +83,7 @@ namespace Handelsplatz{
         return 0;
     }
 
-    void Nutzer::offer_einfügen(std::pair<int,Angebot> paar)
+    void Nutzer::offer_einfügen(std::pair<int, Angebot> paar)
     {
         my_offers.insert(paar);
         std::cout << "Erfolgreich hinzugefügt" << std::endl;
@@ -80,7 +91,7 @@ namespace Handelsplatz{
 
     bool Nutzer::find_my_offer(int id)
     {
-        for (const auto& [id_,angebot] : my_offers)
+        for (const auto &[id_, angebot] : my_offers)
         {
             if (id == id_)
             {
@@ -90,7 +101,7 @@ namespace Handelsplatz{
         return false;
     }
 
-    void Nutzer::remove_my_offer(int id) 
+    void Nutzer::remove_my_offer(int id)
     {
         my_offers.erase(id);
     }
@@ -100,7 +111,7 @@ namespace Handelsplatz{
         return my_offers;
     }
 
-    std::map<std::string,int> Nutzer::get_inventar()
+    std::map<std::string, int> Nutzer::get_inventar()
     {
         return inventar;
     }

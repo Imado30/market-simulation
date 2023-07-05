@@ -1,9 +1,9 @@
 // uvicorn Server:rest_api --port 8000 --reload
 // cmake -S . -B build && cmake --build build && cmake --install build
 // python3 -m uvicorn server:rest_api --port 8000 --reload
-//cmake -S . -B build &&
-//cmake --build build &&
-//cmake --install build
+// cmake -S . -B build &&
+// cmake --build build &&
+// cmake --install build
 
 #include <pybind11/pybind11.h>
 #include <Nutzer.hpp>
@@ -15,11 +15,12 @@
 namespace py = pybind11;
 using namespace Handelsplatz;
 
-PYBIND11_MODULE(handelsplatz, m) {
+PYBIND11_MODULE(handelsplatz, m)
+{
     m.doc() = "Handelsplatz";
 
     py::class_<Nutzer>(m, "Nutzer")
-        .def(py::init<std::string,std::string>())        
+        .def(py::init<std::string, std::string>())
         .def("get_berry", &Nutzer::get_berry)
         .def("set_berry", &Nutzer::set_berry)
         .def("find_ware", &Nutzer::find_ware)
@@ -43,26 +44,21 @@ PYBIND11_MODULE(handelsplatz, m) {
         .def(py::init<std::string, int, double>())
         .def("get_warentyp", &Angebot::get_warentyp)
         .def("get_anzahl", &Angebot::get_anzahl)
-        .def("get_preis", &Angebot::get_preis); 
+        .def("get_preis", &Angebot::get_preis);
 
     py::class_<Markt>(m, "Markt")
         .def(py::init<>())
         .def("create_offer", &Markt::create_offer)
         .def("delete_offer", &Markt::delete_offer)
         .def("accept_offer", &Markt::accept_offer)
-
         .def("sell", &Markt::sell)
         .def("buy", &Markt::buy)
-
         .def("add_offer_ids", &Markt::add_offer_ids)
-
         .def("create_user", &Markt::create_user)
         .def("edit_user", &Markt::edit_user)
         .def("auth", &Markt::auth)
-
         .def("kursverlauf_berechnen", &Markt::kursverlauf_berechnen)
         .def("update_all", &Markt::update_all)
-        
         .def("get_size_user", &Markt::get_size_user)
         .def("get_owner", &Markt::get_owner)
         .def("get_size_offers", &Markt::get_size_offers)

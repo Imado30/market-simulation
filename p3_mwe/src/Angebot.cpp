@@ -3,20 +3,24 @@
 #include <string>
 #include <map>
 
-namespace Handelsplatz{
+namespace Handelsplatz
+{
 
-Angebot::Angebot(const std::string& warentyp, int anzahl, double preis)
-    : warentyp(warentyp), anzahl(anzahl), preis(preis) {}
+    Angebot::Angebot(const std::string &warentyp, int anzahl, double preis)
+        : warentyp(warentyp), anzahl(anzahl), preis(preis) {}
 
-std::string Angebot::get_warentyp() const {
-    return warentyp;
-}
+    std::string Angebot::get_warentyp() const
+    {
+        return warentyp;
+    }
 
-int Angebot::get_anzahl() const {
-    return anzahl;
-}
+    int Angebot::get_anzahl() const
+    {
+        return anzahl;
+    }
 
-double Angebot::get_preis() const {
-    return preis;
-}
+    double Angebot::get_preis() const
+    {
+        return preis;
+    }
 }
